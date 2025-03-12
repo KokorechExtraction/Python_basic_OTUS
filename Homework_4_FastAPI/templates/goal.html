@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+<!--{% block title %} {{ title }} {% endblock %}-->
+{% block content %}
+
+
+ {% if records %}
+        <!-- Если есть записи, выводим их список -->
+        <h2>All Records</h2>
+        <ul>
+            <!-- Цикл по всем записям -->
+            {% for bear in bears %}
+            <li>ID: {{ bear.id }}, Name: {{ bear.name }}, Age: {{ bear.age }}</li>
+            {% endfor %}
+        </ul>
+        {% elif bear %}
+        <!-- Если есть одна запись, выводим ее детали -->
+        <h2>Record Details</h2>
+        <p>ID: {{ bear.id }}</p>
+        <p>Name: {{ bear.name }}</p>
+        <p>Age: {{ bear.age }}</p>
+
+        {% endif %}
+
+
+
+
+<h2>ГОООООЛ</h2>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Показать всех</h5>
+
+    <a href="http://127.0.0.1:8000/api/bears" class="card-link">ГОООООЛ</a>
+
+  </div>
+</div>
+
+
+
+
+<h2> </h2>
+<h2>Найти по ID</h2>
+
+
+<form action="/api/bears/" method="get">
+<div class="row g-3 align-items-center">
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Имя</label>
+  </div>
+  <div class="col-auto">
+    <input type="text" id="id" name="{bear_id}"  class="form-control" aria-describedby="passwordHelpInline">
+  </div>
+</div>
+
+
+<p> </p>
+<button type="submit" class="btn btn-primary btn-lg">Найти</button>
+
+</form>
+
+<h2>Создать</h2>
+
+
+<form action="/api/bears/add_bear" method="post">
+<div class="row g-3 align-items-center">
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Имя</label>
+  </div>
+  <div class="col-auto">
+    <input type="text" id="name" name="name"  class="form-control" aria-describedby="passwordHelpInline" >
+  </div>
+</div>
+
+<div class="row g-3 align-items-center">
+  <div class="col-auto">
+    <label for="name" class="col-form-label">Возраст</label>
+  </div>
+  <div class="col-auto">
+    <input type="text" id="age" name="age"   class="form-control" aria-describedby="passwordHelpInline" >
+  </div>
+</div>
+<p> </p>
+<button type="submit" class="btn btn-primary btn-lg">Создать</button>
+
+
+
+<!--<h2>Add New Record</h2>-->
+<!--        <form action="/api/bears/{name}" method="post">-->
+<!--            &lt;!&ndash; Поле для ввода имени &ndash;&gt;-->
+<!--            <label for="name">Name:</label>-->
+<!--            <input type="text" id="name" name="name" required><br><br>-->
+<!--            -->
+<!--            &lt;!&ndash; Кнопка для отправки формы &ndash;&gt;-->
+<!--            <button type="submit">Add Record</button>-->
+<!--        </form>-->
+
+{% endblock %}
