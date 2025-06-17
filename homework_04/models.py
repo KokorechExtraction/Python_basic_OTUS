@@ -92,7 +92,7 @@ class User(
         nullable=False,
     )
 
-    publications: Mapped[list["Post"]] = relationship(back_populates="author")
+    posts: Mapped[list["Post"]] = relationship(back_populates="user")
 
 
 class Post(
@@ -119,4 +119,4 @@ class Post(
         nullable=False,
     )
 
-    author: Mapped["User"] = relationship(back_populates="publications")
+    user: Mapped["User"] = relationship(back_populates="posts")
