@@ -15,14 +15,22 @@
 
 import asyncio
 
-from typing import List
-
-
+from typing import List, Sequence
+from itertools import cycle
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.testing.suite.test_reflection import metadata
 
 from homework_04.models import Base, User, Post, engine, Session
 from homework_04.jsonplaceholder_requests import fetch_users_data, fetch_posts_data
+
+
+async def get_users(
+    session: AsyncSession,
+) -> Sequence[User]:
+    statement = select(User).order_by(User.id)
+    result = await session.scalars(statement)
+    return result.all()
 
 
 async def create_users(
@@ -46,10 +54,12 @@ async def create_posts(
     session: AsyncSession,
     posts_data: List[dict],
 ) -> None:
+    users = cycle(await get_users(session))
     posts = [
         Post(
             title=post_data["title"],
             body=post_data["body"],
+            user=next(users),
         )
         for post_data in posts_data
     ]

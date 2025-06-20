@@ -40,8 +40,6 @@ class Base(DeclarativeBase):
     def __tablename__(cls) -> str:
         return cls.__name__.lower() + "s"
 
-    pass
-
 
 class IDMixin:
     id: Mapped[UUID] = mapped_column(
@@ -113,7 +111,8 @@ class Post(
         server_default="",
     )
 
-    user_id: Mapped[int] = mapped_column(
+    user_id: Mapped[UUID] = mapped_column(
+        UUID(as_uuid=True),
         ForeignKey("users.id"),
         nullable=False,
     )
