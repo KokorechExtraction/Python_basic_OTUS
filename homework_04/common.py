@@ -16,6 +16,3 @@ def configure_logging(level: int = logging.INFO) -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
         format=DEFAULT_LOG_FORMAT,
     )
-
-
-i

@@ -27,18 +27,18 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 PG_CONN_URI = (
     os.environ.get("SQLALCHEMY_PG_CONN_URI")
-    or "postgresql+asyncpg://postgres:password@localhost/postgres"
+    or "postgresql+asyncpg://app:123@localhost:5432/homework6"
 )
 
-db_url = "postgresql+asyncpg://app:apppassword@localhost:5432/blog"
+db_url = "postgresql+asyncpg://app:123@localhost:5432/homework6"
 
 engine = create_async_engine(db_url, echo=True)
 
 
 class Base(DeclarativeBase):
-    # @declared_attr.directive
-    # def __table__(cls) -> str:
-    #     return cls.__name__.lower()
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower() + "s"
 
     pass
 
@@ -49,23 +49,23 @@ class IDMixin:
     )
 
 
-# class CreatedAtMixin:
-#     created_at: Mapped[datetime] = mapped_column(
-#         # DateTime(timezone=True),
-#         server_default=func.now,
-#         # nullable=False,
-#         # default=datetime.now,
-#     )
+class CreatedAtMixin:
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+        default=datetime.now,
+    )
 
 
-# class UpdatedAtMixin:
-#     updated_at: Mapped[datetime] = mapped_column(
-#         DateTime(timezone=True), server_default=func.now, onupdate=func.now
-#     )
+class UpdatedAtMixin:
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
 
-# class TimeStampsMixin(CreatedAtMixin, UpdatedAtMixin):
-#     pass
+class TimeStampsMixin(CreatedAtMixin, UpdatedAtMixin):
+    pass
 
 
 Session = async_sessionmaker(bind=engine)
@@ -73,10 +73,9 @@ Session = async_sessionmaker(bind=engine)
 
 class User(
     IDMixin,
-    # CreatedAtMixin,
+    TimeStampsMixin,
     Base,
 ):
-    __tablename__ = "users"
 
     name: Mapped[str] = mapped_column(
         String(length=32),
@@ -97,10 +96,10 @@ class User(
 
 class Post(
     IDMixin,
-    # TimeStampsMixin,
+    TimeStampsMixin,
     Base,
 ):
-    __tablename__ = "posts"
+    # __tablename__ = "posts"
     title: Mapped[str] = mapped_column(
         String(length=120),
         nullable=False,
@@ -115,7 +114,7 @@ class Post(
     )
 
     user_id: Mapped[int] = mapped_column(
-        ForeignKey("user.id"),
+        ForeignKey("users.id"),
         nullable=False,
     )
 

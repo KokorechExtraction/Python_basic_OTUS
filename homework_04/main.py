@@ -19,6 +19,8 @@ from typing import List
 
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.testing.suite.test_reflection import metadata
+
 from homework_04.models import Base, User, Post, engine, Session
 from homework_04.jsonplaceholder_requests import fetch_users_data, fetch_posts_data
 
@@ -47,7 +49,7 @@ async def create_posts(
     posts = [
         Post(
             title=post_data["title"],
-            body=post_data["bode"],
+            body=post_data["body"],
         )
         for post_data in posts_data
     ]
@@ -60,6 +62,8 @@ async def async_main():
     async with engine.connect() as session:
         await session.run_sync(Base.metadata.create_all)
 
+    print(Base.metadata.tables)
+
     async with Session() as session:
         users_data_coro = fetch_users_data()
         posts_data_coro = fetch_posts_data()
@@ -68,9 +72,8 @@ async def async_main():
             users_data_coro,
             posts_data_coro,
         )
-
-        await create_users(Session, user_data)
-        await create_posts(Session, post_data)
+        await create_users(session, user_data)
+        await create_posts(session, post_data)
 
 
 def main():
