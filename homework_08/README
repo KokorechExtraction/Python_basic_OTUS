@@ -1,0 +1,5 @@
+catogory1 = Category.objects.create(name="Some shit", description="fancy shit")
+catogory2 = Category.objects.create(name="Any shit", description="Low price shit")
+
+product1 = Product.objects.create(name="Regular Phone", description="shit your can call with", price="300", category=catogory2)
+product2 = Product.objects.create(name="Very Special Phone", description="shit your can not only call with", price="6969", category=catogory1)
