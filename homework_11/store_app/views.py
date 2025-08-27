@@ -11,6 +11,7 @@ from django.views.generic import (
 from django.contrib import messages
 from .models import Product, Category, Comment
 from .forms import ProductModelForm
+
 from .tasks import logging_new_product
 
 
@@ -69,7 +70,9 @@ class ProductCreateView(CreateView):
 
     def form_valid(self, form):
         messages.success(self.request, "Продукт успешно создан")
-        logging_new_product.delay()
+        logging_new_product.delay(
+            recipient_email="user@example.com",
+        )
         return super().form_valid(form)
 
 
