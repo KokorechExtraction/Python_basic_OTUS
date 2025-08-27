@@ -1,0 +1,16 @@
+{% extends "store_app/base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+     <h2>{{title}} "{{product.name}}"</h2>
+     <p>{{description}}</p>
+     <form method="post" class="mt-4" >
+       {% csrf_token %}
+       <button type="submit" class="btn btn-primary">Удалить</button>
+       <a href="{% url 'product_list' %}">Отмена</a>
+     </form>
+
+
+
+{% endblock %}
